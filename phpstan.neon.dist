@@ -1,0 +1,10 @@
+parameters:
+    tmpDir: .build/cache/phpstan
+    level: max
+    treatPhpDocTypesAsCertain: false
+    paths:
+        - ./src
+    ignoreErrors:
+        -
+            message: '#Cannot access property \$\S* on mixed.#'
+            path: src/Payload.php

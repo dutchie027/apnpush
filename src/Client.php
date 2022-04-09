@@ -1,0 +1,272 @@
+<?php
+
+namespace Apnpush;
+
+/**
+ * Class Client
+ */
+class Client
+{
+    /**
+     * Array of notifications.
+     *
+     * @var Notification[]
+     */
+    private $notifications = [];
+
+    /**
+     * Authentication provider.
+     *
+     * @var AuthProviderInterface
+     */
+    private $authProvider;
+
+    /**
+     * Production or sandbox environment.
+     *
+     * @var bool
+     */
+    private $isProductionEnv;
+
+    /**
+     * Number of concurrent requests to multiplex in the same connection.
+     *
+     * @var int
+     */
+    private $nbConcurrentRequests = 20;
+
+    /**
+     * Number of maximum concurrent connections established to the APNS servers.
+     *
+     * @var int
+     */
+    private $maxConcurrentConnections = 1;
+
+    /**
+     * Flag to know if we should automatically close connections to the APNS servers or keep them alive.
+     *
+     * @var bool
+     */
+    private $autoCloseConnections = true;
+
+    /**
+     * Current curl_multi handle instance.
+     *
+     * @var \CurlMultiHandle|null
+     */
+    private $curlMultiHandle;
+
+    /**
+     * options for curl
+     *
+     * @var array<mixed>
+     */
+    private $curlOptions = [];
+
+    /**
+     * Client constructor.
+     *
+     * @param array<mixed> $curlOptions
+     */
+    public function __construct(AuthProviderInterface $authProvider, bool $isProductionEnv = false, array $curlOptions = [])
+    {
+        $this->authProvider = $authProvider;
+        $this->isProductionEnv = $isProductionEnv;
+        $this->curlOptions = $curlOptions;
+    }
+
+    /**
+     * Push notifications to APNs.
+     *
+     * @return ApnsResponseInterface[]
+     */
+    public function push(): array
+    {
+        $responseCollection = [];
+
+        if (!$this->curlMultiHandle) {
+            $this->curlMultiHandle = curl_multi_init();
+
+            if (!defined('CURLPIPE_MULTIPLEX')) {
+                define('CURLPIPE_MULTIPLEX', 2);
+            }
+
+            curl_multi_setopt($this->curlMultiHandle, CURLMOPT_PIPELINING, CURLPIPE_MULTIPLEX);
+
+            if (defined('CURLMOPT_MAX_HOST_CONNECTIONS')) {
+                curl_multi_setopt($this->curlMultiHandle, CURLMOPT_MAX_HOST_CONNECTIONS, $this->maxConcurrentConnections);
+            }
+        }
+
+        $mh = $this->curlMultiHandle;
+
+        $i = 0;
+
+        while (!empty($this->notifications) && $i++ < $this->nbConcurrentRequests) {
+            $notification = array_pop($this->notifications);
+            curl_multi_add_handle($mh, $this->prepareHandle($notification));
+        }
+
+        // Clear out curl handle buffer
+        do {
+            $execrun = curl_multi_exec($mh, $running);
+        } while ($execrun === CURLM_CALL_MULTI_PERFORM);
+
+        // Continue processing while we have active curl handles
+        while ($running > 0 && $execrun === CURLM_OK) {
+            // Block until data is available
+            $select_fd = curl_multi_select($mh);
+            // If select returns -1 while running, wait 250 microseconds before continuing
+            // Using curl_multi_timeout would be better but it isn't available in PHP yet
+            // https://php.net/manual/en/function.curl-multi-select.php#115381
+            if ($running && $select_fd === -1) {
+                usleep(250);
+            }
+
+            // Continue to wait for more data if needed
+            do {
+                $execrun = curl_multi_exec($mh, $running);
+            } while ($execrun === CURLM_CALL_MULTI_PERFORM);
+
+            // Start reading results
+            while ($done = curl_multi_info_read($mh)) {
+                $handle = $done['handle'];
+
+                $result = curl_multi_getcontent($handle) ?: '';
+
+                // find out which token the response is about
+                $token = curl_getinfo($handle, CURLINFO_PRIVATE) ?: null;
+
+                $responseParts = explode("\r\n\r\n", $result, 2);
+                $headers = '';
+                $body = '';
+
+                if (isset($responseParts[0])) {
+                    $headers = $responseParts[0];
+                }
+
+                if (isset($responseParts[1])) {
+                    $body = $responseParts[1];
+                }
+
+                $statusCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+
+                if ($statusCode === 0) {
+                    throw new \Exception(curl_error($handle));
+                }
+
+                $responseCollection[] = new Response($statusCode, $headers, (string) $body, $token);
+                curl_multi_remove_handle($mh, $handle);
+                curl_close($handle);
+
+                if (!empty($this->notifications)) {
+                    $notification = array_pop($this->notifications);
+                    curl_multi_add_handle($mh, $this->prepareHandle($notification));
+                    ++$running;
+                }
+            }
+        }
+
+        if ($this->autoCloseConnections) {
+            curl_multi_close($mh);
+            $this->curlMultiHandle = null;
+        }
+
+        return $responseCollection;
+    }
+
+    /**
+     * Prepares a curl handle from a Notification object.
+     */
+    private function prepareHandle(Notification $notification): \CurlHandle
+    {
+        $request = new Request($notification, $this->isProductionEnv);
+        $ch = curl_init();
+
+        $this->authProvider->authenticateClient($request);
+
+        curl_setopt_array($ch, $this->curlOptions + $request->getOptions());
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $request->getDecoratedHeaders());
+
+        // store device token to identify response
+        curl_setopt($ch, CURLOPT_PRIVATE, $notification->getDeviceToken());
+
+        return $ch;
+    }
+
+    /**
+     * Add several notifications in queue for sending.
+     *
+     * @param Notification[] $notifications
+     */
+    public function addNotifications(array $notifications): void
+    {
+        foreach ($notifications as $notification) {
+            if (in_array($notification, $this->notifications, true)) {
+                continue;
+            }
+
+            $this->addNotification($notification);
+        }
+    }
+
+    /**
+     * Add notification in queue for sending.
+     */
+    public function addNotification(Notification $notification): void
+    {
+        $this->notifications[] = $notification;
+    }
+
+    /**
+     * Get already added notifications.
+     *
+     * @return Notification[]
+     */
+    public function getNotifications(): array
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * Close the current curl multi handle.
+     */
+    public function close(): void
+    {
+        if ($this->curlMultiHandle) {
+            curl_multi_close($this->curlMultiHandle);
+            $this->curlMultiHandle = null;
+        }
+    }
+
+    /**
+     * Set the number of concurrent requests sent through the multiplexed connections.
+     *
+     * @param int $nbConcurrentRequests
+     */
+    public function setNbConcurrentRequests($nbConcurrentRequests): void
+    {
+        $this->nbConcurrentRequests = $nbConcurrentRequests;
+    }
+
+    /**
+     * Set the number of maximum concurrent connections established to the APNS servers.
+     *
+     * @param int $maxConcurrentConnections
+     */
+    public function setMaxConcurrentConnections($maxConcurrentConnections): void
+    {
+        $this->maxConcurrentConnections = $maxConcurrentConnections;
+    }
+
+    /**
+     * Set if the client should automatically close the connections or not. Apple recommends keeping
+     * connections open if you send more than a few notification per minutes.
+     *
+     * @param bool $autoCloseConnections
+     */
+    public function setAutoCloseConnections($autoCloseConnections): void
+    {
+        $this->autoCloseConnections = $autoCloseConnections;
+    }
+}

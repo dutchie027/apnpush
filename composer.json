@@ -1,0 +1,76 @@
+{
+    "name": "dutchie027/apnpush",
+    "type": "library",
+    "description": "PHP client for Apple Push Notification Service (APNs) - Send push notifications to iOS using the new APNs HTTP/2 protocol with token-based (JWT with p8 private key) or certificate-based authentication",
+    "keywords": [
+        "apns",
+        "push notifications",
+        "p8",
+        "php apns"
+    ],
+    "homepage": "https://github.com/dutchie027/apnpush",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arthur Edamov",
+            "email": "edamov@gmail.com",
+            "homepage": "https://github.com/edamov",
+            "role": "Developer"
+        },
+        {
+            "name": "Justin Rodino",
+            "email": "justin@rodino.dev",
+            "homepage": "https://github.com/dutchie027",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-curl": "*",
+        "lib-curl": ">=7.46.0",
+        "ext-openssl": "*",
+        "lib-openssl": ">=1.0.2.5",
+        "ext-json": "*",
+        "ext-xml": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "mockery/mockery": "^1.5",
+        "phpstan/phpstan": "^1.5",
+        "phpunit/phpunit": "^9",
+        "psalm/phar": "^4.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "Apnpush\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "dutchie027\\apnpush\\": "tests"
+        }
+    },
+    "support": {
+        "forum": "https://github.com/dutchie027/apnpush/discussions",
+        "issues": "https://github.com/dutchie027/apnpush/issues",
+        "source": "https://github.com/dutchie027/easymyapnpushsqlbackup/tree/main"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "fix": "./vendor/bin/php-cs-fixer fix",
+        "test": "./vendor/bin/phpunit",
+        "stan": "./vendor/bin/phpstan --no-progress",
+        "runall": [
+            "@fix",
+            "@test",
+            "@stan"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Runs phpunit tests",
+        "fix": "Runs PHP-CS Fixer",
+        "stan": "Runs phpstan to check standards",
+        "runall": "Runs all tests (fixer, phpunit, phpstan)"
+    }
+}
