@@ -3,4 +3,3 @@
 /resources/
 /.build/
 .php-cs-fixer.cache
-test.php
