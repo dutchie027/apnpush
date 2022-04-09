@@ -25,7 +25,7 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": ">=7.4",
         "ext-curl": "*",
         "lib-curl": ">=7.46.0",
         "ext-openssl": "*",
