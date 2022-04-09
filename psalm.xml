@@ -11,5 +11,13 @@
     <projectFiles>
         <directory name="src"/>
     </projectFiles>
-
+    <issueHandlers>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <file name="src/Payload.php" />
+                <file name="src/Payload/Alert.php" />
+                <file name="src/Payload/Sound.php" />
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+</issueHandlers>
 </psalm>

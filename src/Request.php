@@ -104,7 +104,6 @@ class Request
      * Add request option.
      *
      * @param string $value
-     * @param string $value
      */
     public function addOption(string $key, $value): void
     {
@@ -189,6 +188,8 @@ class Request
 
     /**
      * Prepare APNs headers before sending request.
+     *
+     * @psalm-suppress PossiblyNullReference
      */
     private function prepareApnsHeaders(Notification $notification): void
     {

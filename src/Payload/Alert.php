@@ -290,6 +290,8 @@ class Alert implements \JsonSerializable
      *
      * @return array<mixed>
      *
+     * @psalm-suppress all
+     *
      * @see   http://php.net/manual/en/jsonserializable.jsonserialize.php
      */
     public function jsonSerialize()

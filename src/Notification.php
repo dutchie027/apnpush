@@ -31,26 +31,26 @@ class Notification
      *
      * @var string
      */
-    private $id;
+    private $id = '';
 
     /**
      * This value identifies the date when the notification is no longer valid and can be discarded.
      *
-     * @var \DateTime
+     * @var \DateTime|null
      */
     private $expirationAt;
 
     /**
      * The priority of the notification.
      *
-     * @var int
+     * @var int|null
      */
     private $priority;
 
     /**
      * Id for the coalescing of similar notifications.
      *
-     * @var string
+     * @var string|null
      */
     private $collapseId;
 

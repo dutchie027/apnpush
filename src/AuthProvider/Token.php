@@ -17,7 +17,7 @@ class Token implements AuthProviderInterface
      *
      * @var string
      */
-    private $token;
+    private $token = '';
 
     /**
      * Path to p8 private key.
@@ -125,7 +125,7 @@ class Token implements AuthProviderInterface
      *
      * @return string
      */
-    public function generateApnsTopic(mixed $pushType)
+    public function generateApnsTopic($pushType)
     {
         switch ($pushType) {
             case 'voip':

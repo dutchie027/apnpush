@@ -122,6 +122,8 @@ class Payload implements \JsonSerializable
      * Set Alert.
      *
      * @param Alert|string $alert
+     *
+     * @psalm-suppress all
      */
     public function setAlert($alert): Payload
     {
@@ -166,6 +168,8 @@ class Payload implements \JsonSerializable
      * Set sound.
      *
      * @param Sound|string $sound
+     *
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function setSound($sound): Payload
     {
@@ -368,6 +372,8 @@ class Payload implements \JsonSerializable
      * Specify data which should be serialized to JSON.
      *
      * @return array<string>
+     *
+     * @psalm-suppress all
      *
      * @see   http://php.net/manual/en/jsonserializable.jsonserialize.php
      */

@@ -61,16 +61,19 @@
         "fix": "./vendor/bin/php-cs-fixer fix",
         "test": "./vendor/bin/phpunit",
         "stan": "./vendor/bin/phpstan --no-progress",
+        "psalm": "./vendor/bin/psalm.phar --no-progress --show-info=true",
         "runall": [
             "@fix",
             "@test",
-            "@stan"
+            "@stan",
+            "@psalm"
         ]
     },
     "scripts-descriptions": {
         "test": "Runs phpunit tests",
         "fix": "Runs PHP-CS Fixer",
         "stan": "Runs phpstan to check standards",
-        "runall": "Runs all tests (fixer, phpunit, phpstan)"
+        "psalm": "Runs psalm to check code",
+        "runall": "Runs all tests (fixer, phpunit, phpstan, psalm)"
     }
 }

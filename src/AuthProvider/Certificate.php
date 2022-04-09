@@ -80,7 +80,7 @@ class Certificate implements AuthProviderInterface
      *
      * @return string
      */
-    public function generateApnsTopic(mixed $pushType)
+    public function generateApnsTopic($pushType)
     {
         switch ($pushType) {
             case 'voip':

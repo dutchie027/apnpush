@@ -78,6 +78,11 @@ class Client
     /**
      * Push notifications to APNs.
      *
+     * @psalm-suppress InvalidPropertyAssignmentValue
+     * @psalm-suppress PossiblyInvalidArgument
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress RedundantCondition
+     *
      * @return ApnsResponseInterface[]
      */
     public function push(): array
@@ -155,7 +160,7 @@ class Client
                     throw new \Exception(curl_error($handle));
                 }
 
-                $responseCollection[] = new Response($statusCode, $headers, (string) $body, $token);
+                $responseCollection[] = new Response($statusCode, $headers, $body, $token);
                 curl_multi_remove_handle($mh, $handle);
                 curl_close($handle);
 
@@ -177,6 +182,9 @@ class Client
 
     /**
      * Prepares a curl handle from a Notification object.
+     *
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress InvalidReturnType
      */
     private function prepareHandle(Notification $notification): \CurlHandle
     {
@@ -230,6 +238,8 @@ class Client
 
     /**
      * Close the current curl multi handle.
+     *
+     * @psalm-suppress InvalidArgument
      */
     public function close(): void
     {
