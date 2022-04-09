@@ -22,7 +22,7 @@
             "email": "edamov@gmail.com",
             "homepage": "https://github.com/edamov",
             "role": "Orignial Developer"
-        },
+        }
     ],
     "require": {
         "php": "^7.4|^8.0",
