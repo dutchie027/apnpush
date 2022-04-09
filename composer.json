@@ -12,17 +12,17 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Arthur Edamov",
-            "email": "edamov@gmail.com",
-            "homepage": "https://github.com/edamov",
-            "role": "Developer"
-        },
-        {
             "name": "Justin Rodino",
             "email": "justin@rodino.dev",
             "homepage": "https://github.com/dutchie027",
             "role": "Developer"
-        }
+        },
+        {
+            "name": "Arthur Edamov",
+            "email": "edamov@gmail.com",
+            "homepage": "https://github.com/edamov",
+            "role": "Orignial Developer"
+        },
     ],
     "require": {
         "php": "^7.4|^8.0",
@@ -53,7 +53,7 @@
     "support": {
         "forum": "https://github.com/dutchie027/apnpush/discussions",
         "issues": "https://github.com/dutchie027/apnpush/issues",
-        "source": "https://github.com/dutchie027/easymyapnpushsqlbackup/tree/main"
+        "source": "https://github.com/dutchie027/apnpush/tree/main"
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
