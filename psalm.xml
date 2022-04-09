@@ -19,5 +19,11 @@
                 <file name="src/Payload/Sound.php" />
             </errorLevel>
         </PropertyNotSetInConstructor>
+        <ReservedWord>
+            <errorLevel type="suppress">
+                <file name="src/AuthProvider/Certificate.php" />
+                <file name="src/AuthProvider/Token.php" />
+            </errorLevel>
+        </ReservedWord>
 </issueHandlers>
 </psalm>
