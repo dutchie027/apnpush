@@ -43,7 +43,11 @@ class ClientTest extends TestCase
 
         $ch = $method->invoke($client, $notification);
 
-        self::assertIsObject($ch);
+        if (PHP_MAJOR_VERSION === 7) {
+            self::assertIsResource($ch);
+        } elseif (PHP_MAJOR_VERSION === 8) {
+            self::assertIsObject($ch);
+        }
         self::assertTrue(curl_errno($ch) === 0);
     }
 }
