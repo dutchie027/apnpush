@@ -169,5 +169,5 @@ Contributions are welcome! To contribute, please familiarize yourself with
 
 [link-packagist]: https://packagist.org/packages/dutchie027/apnpush
 [link-downloads]: https://packagist.org/packages/edamov/pushok
-[link-original-author]: https://github.com/pushok
+[link-original-author]: https://github.com/edamov
 [link-contributors]: ../../contributors
