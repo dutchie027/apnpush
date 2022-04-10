@@ -25,5 +25,10 @@
                 <file name="src/AuthProvider/Token.php" />
             </errorLevel>
         </ReservedWord>
+        <UndefinedDocblockClass>
+            <errorLevel type="suppress">
+                <file name="src/Client.php" />
+            </errorLevel>
+        </UndefinedDocblockClass>
 </issueHandlers>
 </psalm>
