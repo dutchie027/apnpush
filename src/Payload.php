@@ -287,7 +287,7 @@ class Payload implements \JsonSerializable
     /**
      * Set custom value for Payload.
      *
-     * @param string $value
+     * @param mixed $value either string or array depending on key
      *
      * @throws InvalidPayloadException
      */
@@ -305,7 +305,7 @@ class Payload implements \JsonSerializable
     /**
      * Merges custom value for Payload.
      *
-     * @param string $value
+     * @param mixed $value either string or array depending on key
      *
      * @throws InvalidPayloadException
      */
@@ -322,8 +322,10 @@ class Payload implements \JsonSerializable
      * @param string $key
      *
      * @throws InvalidPayloadException
+     *
+     * @return mixed either string or array based on key
      */
-    public function getCustomValue($key): string
+    public function getCustomValue($key)
     {
         if (!array_key_exists($key, $this->customValues)) {
             throw InvalidPayloadException::notExistingCustomValue($key);

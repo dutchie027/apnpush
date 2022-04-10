@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class InvalidPayloadExceptionTest extends TestCase
 {
-    public function testReservedKey()
+    public function testReservedKey(): void
     {
         $exception = InvalidPayloadException::reservedKey();
 
@@ -16,7 +16,7 @@ class InvalidPayloadExceptionTest extends TestCase
         self::assertStringContainsString(Payload::PAYLOAD_ROOT_KEY, $exception->getMessage());
     }
 
-    public function testNotExistingCustomValue()
+    public function testNotExistingCustomValue(): void
     {
         $key = 'this is a string';
 

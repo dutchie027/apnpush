@@ -7,28 +7,28 @@ use PHPUnit\Framework\TestCase;
 
 class SoundTest extends TestCase
 {
-    public function testSetCritical()
+    public function testSetCritical(): void
     {
         $sound = Sound::create()->setCritical(1);
 
         self::assertEquals(1, $sound->getCritical());
     }
 
-    public function testSetName()
+    public function testSetName(): void
     {
         $sound = Sound::create()->setName('soundName');
 
         self::assertEquals('soundName', $sound->getName());
     }
 
-    public function testSetVolume()
+    public function testSetVolume(): void
     {
         $sound = Sound::create()->setVolume(1.0);
 
         self::assertEquals(1.0, $sound->getVolume());
     }
 
-    public function testSoundConvertingToJson()
+    public function testSoundConvertingToJson(): void
     {
         $sound = Sound::create()
             ->setCritical(1)

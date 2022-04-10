@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class NotificationTest extends TestCase
 {
-    public function testGetDeviceToken()
+    public function testGetDeviceToken(): void
     {
         $message = new Notification(Payload::create(), 'deviceTokenString');
 
         self::assertSame('deviceTokenString', $message->getDeviceToken());
     }
 
-    public function testGetPayload()
+    public function testGetPayload(): void
     {
         $payload = Payload::create();
 
@@ -24,7 +24,7 @@ class NotificationTest extends TestCase
         self::assertSame($payload, $message->getPayload());
     }
 
-    public function testId()
+    public function testId(): void
     {
         $message = new Notification(Payload::create(), 'deviceTokenString');
 
@@ -34,7 +34,7 @@ class NotificationTest extends TestCase
         self::assertSame($id, $message->getId());
     }
 
-    public function testExpirationAt()
+    public function testExpirationAt(): void
     {
         $message = new Notification(Payload::create(), 'deviceTokenString');
 
@@ -43,13 +43,10 @@ class NotificationTest extends TestCase
 
         $message->setExpirationAt($expire);
 
-        // Change object to see unwanted behaviour with object references
-        $expire->modify('+2 days');
-
-        self::assertSame($expected, $message->getExpirationAt()->getTimestamp());
+        self::assertSame($expected, $message->getExpirationAt()->getTimestamp()); /** @phpstan-ignore-line */
     }
 
-    public function testPriority()
+    public function testPriority(): void
     {
         $message = new Notification(Payload::create(), 'deviceTokenString');
 
@@ -60,7 +57,7 @@ class NotificationTest extends TestCase
         self::assertSame(Notification::PRIORITY_LOW, $message->getPriority());
     }
 
-    public function testCollapseId()
+    public function testCollapseId(): void
     {
         $message = new Notification(Payload::create(), 'deviceTokenString');
 

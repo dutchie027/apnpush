@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PayloadTest extends TestCase
 {
-    public function testSetAlert()
+    public function testSetAlert(): void
     {
         $alert = Alert::create();
         $payload = Payload::create()->setAlert($alert);
@@ -18,14 +18,14 @@ class PayloadTest extends TestCase
         self::assertSame($alert, $payload->getAlert());
     }
 
-    public function testSetBadge()
+    public function testSetBadge(): void
     {
         $payload = Payload::create()->setBadge(3);
 
         self::assertEquals(3, $payload->getBadge());
     }
 
-    public function testSetSound()
+    public function testSetSound(): void
     {
         $sound = Sound::create();
         $payload = Payload::create()->setSound($sound);
@@ -33,42 +33,42 @@ class PayloadTest extends TestCase
         self::assertSame($sound, $payload->getSound());
     }
 
-    public function testSetCategory()
+    public function testSetCategory(): void
     {
         $payload = Payload::create()->setCategory('categoryString');
 
         self::assertEquals('categoryString', $payload->getCategory());
     }
 
-    public function testSetThreadId()
+    public function testSetThreadId(): void
     {
         $payload = Payload::create()->setThreadId('thread-id');
 
         self::assertEquals('thread-id', $payload->getThreadId());
     }
 
-    public function testSetContentAvailability()
+    public function testSetContentAvailability(): void
     {
         $payload = Payload::create()->setContentAvailability(true);
 
         self::assertTrue($payload->isContentAvailable());
     }
 
-    public function testSetMutableContent()
+    public function testSetMutableContent(): void
     {
         $payload = Payload::create()->setMutableContent(true);
 
         self::assertTrue($payload->hasMutableContent());
     }
 
-    public function testSetCustomValue()
+    public function testSetCustomValue(): void
     {
         $payload = Payload::create()->setCustomValue('key', 'value');
 
         self::assertEquals('value', $payload->getCustomValue('key'));
     }
 
-    public function testSetCustomValueToRootKey()
+    public function testSetCustomValueToRootKey(): void
     {
         $this->expectException(InvalidPayloadException::class);
         $this->expectExceptionMessage("Key aps is reserved and can't be used for custom property.");
@@ -76,24 +76,24 @@ class PayloadTest extends TestCase
         Payload::create()->setCustomValue('aps', 'value');
     }
 
-    public function testGetCustomValueOfNotExistingKey()
+    public function testGetCustomValueOfNotExistingKey(): void
     {
         $this->expectException(InvalidPayloadException::class);
         $this->expectExceptionMessage("Custom value with key 'notExistingKey' doesn't exist.");
 
         Payload::create()
             ->setCustomValue('something', 'value')
-            ->getCustomValue('notExistingKey', 'value');
+            ->getCustomValue('notExistingKey');
     }
 
-    public function testSetPushType()
+    public function testSetPushType(): void
     {
         $payload = Payload::create()->setPushType('pushType');
 
         self::assertEquals('pushType', $payload->getPushType());
     }
 
-    public function testConvertToJSon()
+    public function testConvertToJSon(): void
     {
         $alert = Alert::create()->setTitle('title');
         $sound = Sound::create()->setName('soundName')->setCritical(1)->setVolume(1.0);
@@ -114,7 +114,7 @@ class PayloadTest extends TestCase
         );
     }
 
-    public function testSetCustomArrayType()
+    public function testSetCustomArrayType(): void
     {
         $alert = Alert::create()->setTitle('title');
         $payload = Payload::create()
@@ -124,7 +124,7 @@ class PayloadTest extends TestCase
         self::assertEquals(gettype(json_decode($payload->toJson())->array), 'array');
     }
 
-    public function testJsonSizeException()
+    public function testJsonSizeException(): void
     {
         $this->expectException(InvalidPayloadException::class);
 

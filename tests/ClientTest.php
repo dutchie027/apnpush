@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-    public function testAmountOfAddedMessages()
+    public function testAmountOfAddedMessages(): void
     {
         $notification = $this->createMock(Notification::class);
         $notification2 = $this->createMock(Notification::class);
@@ -32,7 +32,7 @@ class ClientTest extends TestCase
         return new Client($authProvider, $production = false);
     }
 
-    public function testPrepareHandle()
+    public function testPrepareHandle(): void
     {
         $client = $this->getClient();
 

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CertificateTest extends TestCase
 {
-    public function testCreatingCertificateAuthProvider()
+    public function testCreatingCertificateAuthProvider(): void
     {
         $options = $this->getOptions();
         $authProvider = Certificate::create($options);
@@ -18,7 +18,7 @@ class CertificateTest extends TestCase
         self::assertInstanceOf(AuthProviderInterface::class, $authProvider);
     }
 
-    public function testAuthenticatingClient()
+    public function testAuthenticatingClient(): void
     {
         $options = $this->getOptions();
         $authProvider = Certificate::create($options);
@@ -30,7 +30,7 @@ class CertificateTest extends TestCase
         self::assertSame($request->getOptions()[CURLOPT_SSLCERTPASSWD], $options['certificate_secret']);
     }
 
-    public function testVoipApnsTopic()
+    public function testVoipApnsTopic(): void
     {
         $options = $this->getOptions();
         $authProvider = Certificate::create($options);
@@ -41,7 +41,7 @@ class CertificateTest extends TestCase
         self::assertSame($request->getHeaders()['apns-topic'], $options['app_bundle_id'] . '.voip');
     }
 
-    public function testComplicationApnsTopic()
+    public function testComplicationApnsTopic(): void
     {
         $options = $this->getOptions();
         $authProvider = Certificate::create($options);
@@ -52,7 +52,7 @@ class CertificateTest extends TestCase
         self::assertSame($request->getHeaders()['apns-topic'], $options['app_bundle_id'] . '.complication');
     }
 
-    public function testFileproviderApnsTopic()
+    public function testFileproviderApnsTopic(): void
     {
         $options = $this->getOptions();
         $authProvider = Certificate::create($options);
@@ -63,6 +63,11 @@ class CertificateTest extends TestCase
         self::assertSame($request->getHeaders()['apns-topic'], $options['app_bundle_id'] . '.pushkit.fileprovider');
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array<string,string>
+     */
     private function getOptions()
     {
         return [

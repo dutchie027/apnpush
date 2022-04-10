@@ -86,7 +86,7 @@ class Token implements AuthProviderInterface
     /**
      * Create Token Auth Provider.
      *
-     * @param array<string> $options
+     * @param array<array-key, string> $options
      */
     public static function create(array $options): Token
     {

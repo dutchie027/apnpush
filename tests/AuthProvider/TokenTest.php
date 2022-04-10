@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class TokenTest extends TestCase
 {
-    public function testCreatingTokenAuthProviderWithKeyPath()
+    public function testCreatingTokenAuthProviderWithKeyPath(): void
     {
         $options = $this->getOptions();
         $options['private_key_path'] = __DIR__ . '/../files/private_key.p8';
@@ -20,19 +20,19 @@ class TokenTest extends TestCase
         self::assertIsString($authProvider->get());
     }
 
-    public function testCreatingTokenAuthProviderWithKeyContent()
+    public function testCreatingTokenAuthProviderWithKeyContent(): void
     {
         $options = $this->getOptions();
         $options['private_key_content'] = file_get_contents(
             implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'files', 'private_key.p8'])
-        );
+        ) ?: '';
         $authProvider = Token::create($options);
 
         self::assertInstanceOf(AuthProviderInterface::class, $authProvider);
         self::assertIsString($authProvider->get());
     }
 
-    public function testCreatingTokenAuthProviderWithoutKey()
+    public function testCreatingTokenAuthProviderWithoutKey(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -40,7 +40,7 @@ class TokenTest extends TestCase
         Token::create($options);
     }
 
-    public function testUseExistingToken()
+    public function testUseExistingToken(): void
     {
         $token = 'eyJhbGciOiJFUzI1NiIsImtpZCI6IjEyMzQ1Njc4OTAifQ.eyJpc3MiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNDc4NTE0NDk4fQ.' .
             'YxR8Hw--Hp8YH8RF2QDiwOjmGhTC_7g2DpbnzKQZ8Sj20-q12LrLrAMafcuxf97CTHl9hCVere0vYrzcLmGV-A';
@@ -52,7 +52,7 @@ class TokenTest extends TestCase
         self::assertEquals($token, $authProvider->get());
     }
 
-    public function testVoipApnsTopic()
+    public function testVoipApnsTopic(): void
     {
         $options = $this->getOptions();
         $options['private_key_path'] = __DIR__ . '/../files/private_key.p8';
@@ -64,7 +64,7 @@ class TokenTest extends TestCase
         self::assertSame($request->getHeaders()['apns-topic'], $options['app_bundle_id'] . '.voip');
     }
 
-    public function testComplicationApnsTopic()
+    public function testComplicationApnsTopic(): void
     {
         $options = $this->getOptions();
         $options['private_key_path'] = __DIR__ . '/../files/private_key.p8';
@@ -76,7 +76,7 @@ class TokenTest extends TestCase
         self::assertSame($request->getHeaders()['apns-topic'], $options['app_bundle_id'] . '.complication');
     }
 
-    public function testFileproviderApnsTopic()
+    public function testFileproviderApnsTopic(): void
     {
         $options = $this->getOptions();
         $options['private_key_path'] = __DIR__ . '/../files/private_key.p8';
@@ -88,6 +88,11 @@ class TokenTest extends TestCase
         self::assertSame($request->getHeaders()['apns-topic'], $options['app_bundle_id'] . '.pushkit.fileprovider');
     }
 
+    /**
+     * Set Options
+     *
+     * @return array<string,string>
+     */
     private function getOptions()
     {
         return [
