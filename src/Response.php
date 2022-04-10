@@ -169,7 +169,7 @@ class Response implements ApnsResponseInterface
      */
     private static function fetchErrorReason(string $body): string
     {
-        return (string) (json_decode($body, true)['reason'] ?? '');// @phpstan-ignore-line
+        return (string) (json_decode($body, true)['reason'] ?? '');
     }
 
     /**
@@ -179,7 +179,7 @@ class Response implements ApnsResponseInterface
     private static function fetch410Timestamp(int $statusCode, string $body): string
     {
         if ($statusCode === 410) {
-            return (string) (json_decode($body, true)['timestamp'] ?? '');// @phpstan-ignore-line
+            return (string) (json_decode($body, true)['timestamp'] ?? '');
         }
 
         return '';

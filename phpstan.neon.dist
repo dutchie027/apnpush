@@ -1,10 +1,9 @@
+includes:
+    - ./phpstan-baseline.neon
+
 parameters:
     tmpDir: .build/cache/phpstan
-    level: max
+    level: 8
     treatPhpDocTypesAsCertain: false
     paths:
         - ./src
-    ignoreErrors:
-        -
-            message: '#Cannot access property \$\S* on mixed.#'
-            path: src/Payload.php

@@ -183,10 +183,12 @@ class Client
     /**
      * Prepares a curl handle from a Notification object.
      *
+     * @return \CurlHandle|resource
+     *
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress InvalidReturnType
      */
-    private function prepareHandle(Notification $notification): \CurlHandle
+    private function prepareHandle(Notification $notification)
     {
         $request = new Request($notification, $this->isProductionEnv);
         $ch = curl_init();

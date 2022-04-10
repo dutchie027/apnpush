@@ -15,7 +15,7 @@ Apnpush is a simple PHP library for sending push notifications via Apple's APN S
 
 ## Requirements
 
-* PHP >= 7.4
+* PHP 7.4+
 * lib-curl >= 7.46.0 (with http/2 support enabled)
 * lib-openssl >= 1.0.2e 
 

@@ -1,0 +1,31 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#2 \\$handle of function curl_multi_add_handle expects CurlHandle, CurlHandle|resource given\\.$#"
+			count: 2
+			path: src/Client.php
+
+		-
+			message: "#^Parameter \\#1 \\$mh of function curl_multi\\S+ expects resource, \\S+ given\\.$#"
+			count: 11
+			path: src/Client.php
+
+		-
+			message: "#^Property Apnpush\\\\Client::\\$curlMultiHandle has unknown class CurlMultiHandle as its type\\.$#"
+			count: 1
+			path: src/Client.php
+
+		-
+			message: "#^Property Apnpush\\\\Client::\\$curlMultiHandle \\(CurlMultiHandle\\|null\\) does not accept resource\\|false\\.$#"
+			count: 1
+			path: src/Client.php
+
+		-
+			message: "#^Method Apnpush\\\\Client::prepareHandle\\(\\) has invalid return type CurlHandle\\.$#"
+			count: 1
+			path: src/Client.php
+
+		-
+			message: "#^Method Apnpush\\\\Client::prepareHandle\\(\\) never returns CurlHandle so it can be removed from the return type\\.$#"
+			count: 1
+			path: src/Client.php
