@@ -210,6 +210,7 @@ class Request
         if (!empty($notification->getCollapseId())) {
             $this->headers[self::HEADER_APNS_COLLAPSE_ID] = $notification->getCollapseId();
         }
+
         // if the push type was set when the payload was created then it will set that as a push type,
         // otherwise we would do our best in order to guess what push type is.
         if (!empty($notification->getPayload()->getPushType())) {
