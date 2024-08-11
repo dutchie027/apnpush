@@ -121,6 +121,7 @@ class Client
         while ($running > 0 && $execrun === CURLM_OK) {
             // Block until data is available
             $select_fd = curl_multi_select($mh);
+
             // If select returns -1 while running, wait 250 microseconds before continuing
             // Using curl_multi_timeout would be better but it isn't available in PHP yet
             // https://php.net/manual/en/function.curl-multi-select.php#115381
