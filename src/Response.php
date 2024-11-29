@@ -132,8 +132,6 @@ class Response implements ApnsResponseInterface
 
     /**
      * Response constructor.
-     *
-     * @param string $deviceToken
      */
     public function __construct(int $statusCode, string $headers, string $body, string $deviceToken = null)
     {
